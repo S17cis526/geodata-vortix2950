@@ -7,7 +7,12 @@ const PORT = 3000;
 var fs = require('fs');
 var http = require('http');
 var server = new http.Server(handleRequest);
-
+function addLocation(req,res){
+  var url=require('url').parse(req.url)
+  var qs=require('qs').parse(url.query);
+  var address=qs.adress;
+  //perform geolocation with address
+}
 // Start the server
 server.listen(PORT, function() {
   console.log("Listening on port", PORT);
@@ -39,7 +44,9 @@ function serveFile(file, type, req, res) {
  * @param {http.serverResponse} res - the response object
  */
 function handleRequest(req, res) {
-  switch(req.url) {
+  var url=require('url').parse(req.url);
+
+  switch(req.pathName) {
     // Serving static files
     case '/':
     case '/index.html':
@@ -62,7 +69,8 @@ function handleRequest(req, res) {
     case '/united-states.json':
       serveFile('data/united-states.json', 'application/json', req, res);
       break;
-
+      case'.add-location':
+      addLocation();
     // Serve error code
     default:
       res.statusCode = 404;
